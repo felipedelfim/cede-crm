@@ -27,7 +27,7 @@
                     <td> {{ transaction.item.name }} </td>
                     <td> {{ transaction.amount }} </td>
                     <td> {{ transaction.method.name }} </td>
-                    <td> 
+                    <td>
                     	{% if transaction.was_paid %}
                     		<span class="label label-success">Pago</span>
                     	{% else %}
@@ -35,17 +35,19 @@
                     	{% endif %}
                     </td>
                     <td class="btn-group">
-					  <button type="button" class="btn btn-primary">Editar</button>
-					  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <a type="button" class="btn btn-primary" href="{% url 'cashflow:edit' pk=transaction.pk %}">Editar</a>
+					  <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <span class="caret"></span>
-					  </button>
+					  </a>
 					  <ul class="dropdown-menu">
-					    <li><a href="#">Editar</a></li>
+					    <li><a href="{% url 'cashflow:edit' pk=transaction.pk %}">Editar</a></li>
 					    {% if transaction.was_paid == False %}
-					    <li><a href="#">Marcar como Pago</a></li>
+					    	<li><a href="#">Marcar como Pago</a></li>
 					    {% endif %}
-					    <li role="separator" class="divider"></li>
-					    <li><a href="#">Excluir</a></li>
+							{% if user.is_authenticated %}
+						    <li role="separator" class="divider"></li>
+						    <li><a href="#">Excluir</a></li>
+							{% endif %}
 					  </ul>
                     </td>
                   </tr>
