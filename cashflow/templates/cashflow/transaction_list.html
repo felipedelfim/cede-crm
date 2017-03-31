@@ -35,20 +35,20 @@
                     	{% endif %}
                     </td>
                     <td class="btn-group">
-					  <a type="button" class="btn btn-primary" href="{% url 'cashflow:edit' pk=transaction.pk %}">Editar</a>
-					  <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    <span class="caret"></span>
-					  </a>
-					  <ul class="dropdown-menu">
-					    <li><a href="{% url 'cashflow:edit' pk=transaction.pk %}">Editar</a></li>
-					    {% if transaction.was_paid == False %}
-					    	<li><a href="#">Marcar como Pago</a></li>
-					    {% endif %}
-							{% if user.is_authenticated %}
-						    <li role="separator" class="divider"></li>
-						    <li><a href="#">Excluir</a></li>
-							{% endif %}
-					  </ul>
+										  <a type="button" class="btn btn-primary" href="{% url 'cashflow:transaction_edit' pk=transaction.pk %}">Editar</a>
+										  <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										    <span class="caret"></span>
+										  </a>
+										  <ul class="dropdown-menu">
+										    <li><a href="{% url 'cashflow:transaction_edit' pk=transaction.pk %}">Editar</a></li>
+										    {% if transaction.was_paid == False %}
+										    	<li><a href="{% url 'cashflow:transaction_pay' pk=transaction.pk %}">Marcar como Pago</a></li>
+										    {% endif %}
+												{% if user.is_authenticated %}
+											    <li role="separator" class="divider"></li>
+											    <li><a href="{% url 'cashflow:transaction_remove' pk=transaction.pk %}">Excluir</a></li>
+												{% endif %}
+										  </ul>
                     </td>
                   </tr>
                 {% endfor %}

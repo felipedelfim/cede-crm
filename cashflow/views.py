@@ -34,3 +34,13 @@ def transaction_edit(request, pk):
 	else:
 		form = TransactionForm(instance=transaction)
 	return render(request, 'cashflow/transaction_edit.html', {'form': form})
+
+def transaction_pay(request, pk):
+	transaction = get_object_or_404(Transaction, pk=pk)
+	transaction.pay()
+	return redirect('cashflow:index')
+
+def transaction_remove(request, pk):
+	transaction = get_object_or_404(Transaction, pk=pk)
+	transaction.delete()
+	return redirect('cashflow:index')
