@@ -38,6 +38,7 @@ def transaction_edit(request, pk):
 def transaction_pay(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
 	transaction.pay()
+	transaction.save()
 	return redirect('cashflow:index')
 
 def transaction_remove(request, pk):

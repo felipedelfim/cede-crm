@@ -8,13 +8,12 @@ class Transaction(models.Model):
 		return self.paid_at is not None
 	def pay(self):
 		self.paid_at = timezone.now()
-		self.save()
 	item = models.ForeignKey('Item', on_delete=models.CASCADE)
 	person = models.ForeignKey('Person', on_delete=models.CASCADE)
 	method = models.ForeignKey('Method', on_delete=models.CASCADE)
 	amount = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	comments = models.TextField(blank=True)
-	paid_at = models.DateTimeField(null=True)
+	paid_at = models.DateTimeField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 
