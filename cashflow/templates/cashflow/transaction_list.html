@@ -14,7 +14,8 @@
                   <tr>
                     <th> Frequentador </th>
                     <th> Item </th>
-                    <th> Valor </th>
+										<th> Quantidade </th>
+										<th> Total </th>
                     <th> Forma </th>
                     <th> Status </th>
                     <th> Ações </th>
@@ -25,7 +26,8 @@
                   <tr>
                     <td> {{ transaction.person.name }} </td>
                     <td> {{ transaction.item.name }} </td>
-                    <td> {{ transaction.amount }} </td>
+										<td> {{ transaction.amount }} </td>
+										<td> {{ transaction.total }} </td>
                     <td> {{ transaction.method.name }} </td>
                     <td>
                     	{% if transaction.was_paid %}

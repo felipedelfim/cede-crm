@@ -12,7 +12,9 @@ class TransactionForm(forms.ModelForm):
             'item': _('Item'),
             'person': _('Frequentador'),
             'method': _('Forma de Pagamento'),
+            'item_value': _('Valor Unitário'),
             'amount': _('Quantidade'),
+            'total': _('Total'),
             'comments': _('Comentários'),
             'paid_at': _('Pago em'),
         }

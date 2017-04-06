@@ -11,6 +11,7 @@ class Transaction(models.Model):
 	item = models.ForeignKey('Item', on_delete=models.CASCADE)
 	person = models.ForeignKey('Person', on_delete=models.CASCADE)
 	method = models.ForeignKey('Method', on_delete=models.CASCADE)
+	item_value = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	amount = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	total = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	comments = models.TextField(blank=True)

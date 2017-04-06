@@ -16,3 +16,22 @@
   </div>
 </div>
 {% endblock %}
+
+{% block script %}
+<script>
+
+function update_item_value() {
+	$("#id_item_value").val( 5 );
+	update_total();
+}
+
+function update_total() {
+	$("#id_total").val( $("#id_item_value").val() * $("#id_amount").val() );
+}
+
+$("#id_amount").change(update_total);
+$("#id_item_value").change(update_total);
+$("#id_item").change(update_item_value);
+
+</script>
+{% endblock %}
