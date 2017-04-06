@@ -21,8 +21,19 @@
 <script>
 
 function update_item_value() {
-	$("#id_item_value").val( 5 );
-	update_total();
+	var id_item = $(this).val();
+	var url = "{% url 'cashflow:item_get_value' pk=0 %}".replace("0", id_item);
+	$.ajax({
+		url: url,
+		dataType: 'json',
+		success: function (data) {
+			if (data.value) {
+				$("#id_item_value").val( data.value );
+				update_total();
+			}
+		}
+	});
+
 }
 
 function update_total() {

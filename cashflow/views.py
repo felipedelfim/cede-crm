@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transaction
+from .models import Transaction, Item
 from .forms import TransactionForm
 
 class IndexView(generic.ListView):
@@ -45,3 +45,10 @@ def transaction_remove(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
 	transaction.delete()
 	return redirect('cashflow:index')
+
+def item_get_value(request, pk):
+	item = get_object_or_404(Item, pk=pk)
+	data = {
+		'value': item.value
+	}
+	return JsonResponse(data)

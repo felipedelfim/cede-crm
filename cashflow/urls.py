@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edit/$', views.transaction_edit, name='transaction_edit'),
     url(r'^(?P<pk>\d+)/pay/$', views.transaction_pay, name='transaction_pay'),
     url(r'^(?P<pk>\d+)/remove/$', views.transaction_remove, name='transaction_remove'),
+    url(r'^item/(?P<pk>\d+)/value/$', views.item_get_value, name='item_get_value'),
 ]
