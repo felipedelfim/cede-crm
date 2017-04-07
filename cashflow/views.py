@@ -76,3 +76,6 @@ def item_get_value(request, pk):
 		'value': item.value
 	}
 	return JsonResponse(data)
+
+def report_list(request):
+	return render(request, 'cashflow/report_list.html')

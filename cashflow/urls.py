@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^persons/new/$', views.person_new, name='person_new'),
     url(r'^persons/(?P<pk>\d+)/edit/$', views.person_edit, name='person_edit'),
     url(r'^items/(?P<pk>\d+)/value/$', views.item_get_value, name='item_get_value'),
+    url(r'^reports/$', views.report_list, name='report_list'),
+
 ]
