@@ -49,6 +49,16 @@ class PersonListView(generic.ListView):
 		"""Return the last five published questions."""
 		return Person.objects.order_by('name')[:5]
 
+def person_new(request):
+	if request.method == "POST":
+		form = PersonForm(request.POST)
+		if form.is_valid():
+			person = form.save()
+			return redirect('cashflow:index')
+	else:
+		form = PersonForm()
+	return render(request, 'cashflow/person_edit.html', {'form': form})
+
 def person_edit(request, pk):
 	person = get_object_or_404(Person, pk=pk)
 	if request.method == "POST":

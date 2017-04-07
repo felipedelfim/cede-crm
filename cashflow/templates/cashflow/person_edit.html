@@ -1,0 +1,18 @@
+{% extends 'cashflow/base.html' %}
+
+{% block content %}
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-th-large"></i>
+			<h3>Adicionar Frequentador</h3>
+		</div>
+		<div class="widget-content">
+      <form method="POST" class="post-form">{% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="save btn btn-default">Salvar</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

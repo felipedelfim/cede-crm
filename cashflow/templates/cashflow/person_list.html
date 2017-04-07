@@ -23,17 +23,7 @@
                     <td> {{ person.name }} </td>
                     <td> {{ person.group.name }} </td>
                     <td class="btn-group">
-										  <a type="button" class="btn btn-primary" href="#">Editar</a>
-										  <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										    <span class="caret"></span>
-										  </a>
-										  <ul class="dropdown-menu">
-										    <li><a href="#">Editar</a></li>
-												{% if user.is_authenticated %}
-											    <li role="separator" class="divider"></li>
-											    <li><a href="#">Excluir</a></li>
-												{% endif %}
-										  </ul>
+										  <a type="button" class="btn btn-primary" href="{% url 'cashflow:person_edit' pk=person.pk %}">Editar</a>
                     </td>
                   </tr>
                 {% endfor %}
