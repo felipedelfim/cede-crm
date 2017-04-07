@@ -14,6 +14,7 @@
                   <tr>
                     <th> Nome </th>
                     <th> Grupo </th>
+                    <th> Telefone </th>
                     <th> Ações </th>
                   </tr>
                 </thead>
@@ -22,6 +23,7 @@
                   <tr>
                     <td> {{ person.name }} </td>
                     <td> {{ person.group.name }} </td>
+                    <td> {{ person.phone_number }} </td>
                     <td class="btn-group">
 										  <a type="button" class="btn btn-primary" href="{% url 'cashflow:person_edit' pk=person.pk %}">Editar</a>
                     </td>

@@ -29,4 +29,5 @@ class PersonForm(forms.ModelForm):
         labels = {
             'name': _('Nome'),
             'group': _('Grupo'),
+            'phone_number': _('Telefone'),
         }
