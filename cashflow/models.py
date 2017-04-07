@@ -30,9 +30,15 @@ class Item(models.Model):
 	def __str__(self):
 		return self.name
 	name = models.CharField(max_length=200)
+	cost_center = models.ForeignKey('CostCenter', on_delete=models.CASCADE)
 	value = models.FloatField(default=1.00)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+
+class CostCenter(models.Model):
+	def __str__(self):
+		return self.name
+	name = models.CharField(max_length=200)
 
 class Person(models.Model):
 	def __str__(self):
