@@ -3,16 +3,13 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transaction, Item
-from .forms import TransactionForm
+from .models import Transaction, Item, Person
+from .forms import TransactionForm, PersonForm
 
 class IndexView(generic.ListView):
 	def get_queryset(self):
 		"""Return the last five published questions."""
 		return Transaction.objects.order_by('-updated_at')[:5]
-
-class DetailView(generic.DetailView):
-	model = Transaction
 
 def transaction_new(request):
 	if request.method == "POST":
@@ -45,6 +42,23 @@ def transaction_remove(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
 	transaction.delete()
 	return redirect('cashflow:index')
+
+
+class PersonListView(generic.ListView):
+	def get_queryset(self):
+		"""Return the last five published questions."""
+		return Person.objects.order_by('name')[:5]
+
+def person_edit(request, pk):
+	person = get_object_or_404(Person, pk=pk)
+	if request.method == "POST":
+		form = PersonForm(request.POST, instance=person)
+		if form.is_valid():
+			person = form.save()
+			return redirect('cashflow:person_list')
+	else:
+		form = PersonForm(instance=person)
+	return render(request, 'cashflow/person_edit.html', {'form': form})
 
 def item_get_value(request, pk):
 	item = get_object_or_404(Item, pk=pk)

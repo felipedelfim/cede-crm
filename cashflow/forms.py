@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction
+from .models import Transaction, Person
 from django.utils.translation import ugettext_lazy as _
 
 class TransactionForm(forms.ModelForm):
@@ -7,7 +7,6 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         exclude = ['created_at', 'updated_at']
-        #localized_fields = ['__all__']
         labels = {
             'item': _('Item'),
             'person': _('Frequentador'),
@@ -20,4 +19,14 @@ class TransactionForm(forms.ModelForm):
         }
         widgets = {
             'paid_at': forms.DateInput(attrs={'class':'datepicker'}),
+        }
+
+class PersonForm(forms.ModelForm):
+
+    class Meta:
+        model = Person
+        exclude = ['created_at', 'updated_at']
+        labels = {
+            'name': _('Nome'),
+            'group': _('Grupo'),
         }
