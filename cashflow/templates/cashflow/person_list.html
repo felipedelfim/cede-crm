@@ -8,7 +8,7 @@
 			<h3>Frequentadores</h3>
 		</div>
 		<div class="widget-content">
-		{% if person_list %}
+		{% if persons %}
 		      <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -19,7 +19,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                {% for person in person_list %}
+                {% for person in persons %}
                   <tr>
                     <td> {{ person.name }} </td>
                     <td> {{ person.group.name }} </td>
@@ -31,6 +31,7 @@
                 {% endfor %}
                 </tbody>
               </table>
+              {% include "cashflow/pagination_snippet.html" %}
 		{% else %}
 		    <p>Não há frequentadores disponíveis.</p>
 		{% endif %}

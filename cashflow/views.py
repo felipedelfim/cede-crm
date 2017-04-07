@@ -7,9 +7,11 @@ from .models import Transaction, Item, Person
 from .forms import TransactionForm, PersonForm
 
 class IndexView(generic.ListView):
-	def get_queryset(self):
-		"""Return the last five published questions."""
-		return Transaction.objects.order_by('-updated_at')[:5]
+    model = Transaction
+    template_name = 'cadhflow/transaction_list.html'  # Default: <app_label>/<model_name>_list.html
+    context_object_name = 'transactions'  # Default: object_list
+    paginate_by = 25
+    queryset = Transaction.objects.order_by('-updated_at')
 
 def transaction_new(request):
 	if request.method == "POST":
@@ -45,9 +47,11 @@ def transaction_remove(request, pk):
 
 
 class PersonListView(generic.ListView):
-	def get_queryset(self):
-		"""Return the last five published questions."""
-		return Person.objects.order_by('name')[:5]
+    model = Person
+    template_name = 'cadhflow/person_list.html'  # Default: <app_label>/<model_name>_list.html
+    context_object_name = 'persons'  # Default: object_list
+    paginate_by = 25
+    queryset = Person.objects.order_by('name')
 
 def person_new(request):
 	if request.method == "POST":
