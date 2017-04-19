@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.min.css' %}">
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600">
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 	<div class="navbar navbar-fixed-top">
@@ -38,7 +39,7 @@
 	        <li><a href="{% url 'cashflow:transaction_new' %}"><i class="icon-list-alt"></i><i class="icon-plus icon-sm"></i><span>Transação</span> </a> </li>
 					<li><a href="{% url 'cashflow:person_list' %}"><i class="icon-user"></i><span>Frequentadores</span> </a> </li>
 					<li><a href="{% url 'cashflow:person_new' %}"><i class="icon-user"></i><i class="icon-plus icon-sm"></i><span>Frequentador</span> </a> </li>
-					<li><a href="{% url 'cashflow:report_list' %}"><i class="icon-bar-chart"></i><span>Relatórios</span> </a> </li>
+					<li><a href="{% url 'cashflow:transaction_report' %}"><i class="icon-bar-chart"></i><span>Relatórios</span> </a> </li>
 	      </ul>
 	    </div>
 	    <!-- /container -->
@@ -76,7 +77,9 @@
 	</div>
 	<!-- /footer -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/moment.min.js' %}"></script>
+		<script src="{% static 'js/daterangepicker.js' %}"></script>
     {% block script %}
     {% endblock %}
 </body>

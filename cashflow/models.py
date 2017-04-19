@@ -16,7 +16,7 @@ class Transaction(models.Model):
 	amount = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	total = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	comments = models.TextField(blank=True)
-	paid_at = models.DateTimeField(null=True, blank=True)
+	paid_at = models.DateField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 

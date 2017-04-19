@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
+from django.db.models import Sum
+
 
 from .models import Transaction, Item, Person
 from .forms import TransactionForm, PersonForm
@@ -81,5 +83,7 @@ def item_get_value(request, pk):
 	}
 	return JsonResponse(data)
 
-def report_list(request):
-	return render(request, 'cashflow/report_list.html')
+def transaction_report(request):
+    #Job.objects.values('userId').annotate(c=Count('userId')).values('userId__name','c')
+	report = Transaction.objects.values('paid_at').annotate(total=Sum("total")).order_by()
+	return render(request, 'cashflow/transaction_report.html', {'report': report})

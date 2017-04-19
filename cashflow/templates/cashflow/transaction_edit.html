@@ -43,6 +43,13 @@ function update_total() {
 $("#id_amount").change(update_total);
 $("#id_item_value").change(update_total);
 $("#id_item").change(update_item_value);
+$('.datepicker').daterangepicker({
+	singleDatePicker: true,
+	//autoUpdateInput: false,
+	locale:	{
+		format: 'DD/MM/YYYY'
+	}
+});
 
 </script>
 {% endblock %}
