@@ -18,7 +18,7 @@ class TransactionForm(forms.ModelForm):
             'paid_at': _('Pago em'),
         }
         widgets = {
-            'paid_at': forms.DateInput(attrs={'class':'datepicker'}),
+            'paid_at': forms.DateInput(format='%d-%m-%Y', attrs={'class':'date'}),
         }
 
 class PersonForm(forms.ModelForm):
@@ -30,4 +30,7 @@ class PersonForm(forms.ModelForm):
             'name': _('Nome'),
             'group': _('Grupo'),
             'phone_number': _('Telefone'),
+        }
+        widgets = {
+            'phone_number': forms.TextInput(attrs={'class':'phone'}),
         }
