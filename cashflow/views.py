@@ -60,7 +60,7 @@ def person_new(request):
 		form = PersonForm(request.POST)
 		if form.is_valid():
 			person = form.save()
-			return redirect('cashflow:index')
+			return redirect('cashflow:person_list')
 	else:
 		form = PersonForm()
 	return render(request, 'cashflow/person_edit.html', {'form': form})

@@ -2,85 +2,118 @@
 <html lang="en">
 {% load staticfiles %}
 <head>
-	<meta charset="utf-8">
-	<title>{% block title %}CEDE - Fluxo de Caixa{% endblock %}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.min.css' %}">
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600">
-    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-		<link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
-		<link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-	<div class="navbar navbar-fixed-top">
-	  <div class="navbar-inner">
-	    <div class="container"> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
-	                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </a><a class="brand" href="index.html">CEDE - Fluxo de Caixa</a>
-	      <div class="nav-collapse">
-	        <ul class="nav pull-right">
-	          <li><a href="/admin"><i class="icon-cog"></i> Admin</a>
-	          </li>
-	        </ul>
-	      </div>
-	      <!--/.nav-collapse -->
-	    </div>
-	    <!-- /container -->
-	  </div>
-	  <!-- /navbar-inner -->
-	</div>
-	<!-- /navbar -->
-	<div class="subnavbar">
-	  <div class="subnavbar-inner">
-	    <div class="container">
-	      <ul class="mainnav">
-	        <li><a href="{% url 'cashflow:index' %}"><i class="icon-list-alt"></i><span>Transações</span> </a> </li>
-	        <li><a href="{% url 'cashflow:transaction_new' %}"><i class="icon-list-alt"></i><i class="icon-plus icon-sm"></i><span>Transação</span> </a> </li>
-					<li><a href="{% url 'cashflow:person_list' %}"><i class="icon-user"></i><span>Frequentadores</span> </a> </li>
-					<li><a href="{% url 'cashflow:person_new' %}"><i class="icon-user"></i><i class="icon-plus icon-sm"></i><span>Frequentador</span> </a> </li>
-					<li><a href="{% url 'cashflow:transaction_report' %}"><i class="icon-bar-chart"></i><span>Relatórios</span> </a> </li>
-	      </ul>
-	    </div>
-	    <!-- /container -->
-	  </div>
-	  <!-- /subnavbar-inner -->
-	</div>
-	<!-- /subnavbar -->
 
-	<div class="main">
-	  <div class="main-inner">
-	    <div class="container">
-	      <div class="row">
-		    {% block content %}
-		    {% endblock %}
-		  </div>
-		  <!-- /row -->
-	    </div>
-	    <!-- /container -->
-	  </div>
-	  <!-- /main-inner -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>{% block title %}CEDE - Fluxo de Caixa{% endblock %}</title>
+
+	<!-- Bootstrap Core CSS -->
+	<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+
+	<!-- MetisMenu CSS -->
+	<link rel="stylesheet" href="{% static 'vendor/metisMenu/metisMenu.min.css' %}">
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
+
+	<!-- Custom Fonts -->
+	<link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">CEDE - Fluxo de Caixa</a>
+			</div>
+			<!-- /.navbar-header -->
+
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse">
+					<ul class="nav" id="side-menu">
+						<li>
+							<a href="#"><i class="fa fa-exchange fa-fw"></i> Transações<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="{% url 'cashflow:index' %}">Lista</a>
+								</li>
+								<li>
+									<a href="{% url 'cashflow:transaction_new' %}">Nova</a>
+								</li>
+								<li>
+									<a href="{% url 'cashflow:transaction_report' %}">Relatório</a>
+								</li>
+							</ul>
+							<!-- /.nav-second-level -->
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-users fa-fw"></i> Frequentadores<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="{% url 'cashflow:person_list' %}">Lista</a>
+								</li>
+								<li>
+									<a href="{% url 'cashflow:person_new' %}">Novo</a>
+								</li>
+							</ul>
+							<!-- /.nav-second-level -->
+						</li>
+					</ul>
+				</div>
+				<!-- /.sidebar-collapse -->
+			</div>
+			<!-- /.navbar-static-side -->
+		</nav>
+
+		<!-- Page Content -->
+		<div id="page-wrapper">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<!-- /#page-wrapper -->
+
 	</div>
-	<!-- /main -->
-	<div class="footer">
-	  <div class="footer-inner">
-	    <div class="container">
-	      <div class="row">
-	        <div class="span12"> &copy; 2013 <a href="http://www.egrappler.com/">Bootstrap Responsive Admin Template</a>. </div>
-	        <!-- /span12 -->
-	      </div>
-	      <!-- /row -->
-	    </div>
-	    <!-- /container -->
-	  </div>
-	  <!-- /footer-inner -->
-	</div>
-	<!-- /footer -->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-		<script src="{% static 'js/bootstrap.min.js' %}"></script>
-		<script src="{% static 'js/moment.min.js' %}"></script>
-		<script src="{% static 'js/daterangepicker.js' %}"></script>
-    {% block script %}
-    {% endblock %}
+	<!-- /#wrapper -->
+
+	<!-- jQuery -->
+	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+	<!-- Moment -->
+	<script src="{% static 'vendor/moment/moment.min.js' %}"></script>
+
+	<!-- DatePicker -->
+	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="{% static 'js/sb-admin-2.js' %}"></script>
+
+	{% block script %}
+	{% endblock %}
+
 </body>
+
 </html>
