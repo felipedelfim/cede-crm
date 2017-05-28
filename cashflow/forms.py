@@ -8,6 +8,7 @@ class TransactionForm(forms.ModelForm):
         model = Transaction
         exclude = ['created_at', 'updated_at']
         labels = {
+            'category': _('Categoria'),
             'item': _('Item'),
             'person': _('Frequentador'),
             'method': _('Forma de Pagamento'),

@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
@@ -85,3 +85,14 @@ def item_get_value(request, pk):
 		'value': item.value
 	}
 	return JsonResponse(data)
+
+def category_items(request, pk):
+    items = get_list_or_404(Item, category_id=pk)
+    data = []
+    for item in items:
+        data.append({
+        'id': item.id,
+        'name': item.name
+        })
+    #return HttpJsonResponse(data, is_ajax=request.is_ajax())
+    return JsonResponse({'items':data})

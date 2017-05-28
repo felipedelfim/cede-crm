@@ -39,30 +39,43 @@
 function update_item_value() {
 	var id_item = $(this).val();
 	var url = "{% url 'cashflow:item_get_value' pk=0 %}".replace("0", id_item);
-	$.ajax({
-		url: url,
-		dataType: 'json',
-		success: function (data) {
-			if (data.value) {
-				$("#id_item_value").val( data.value );
+	$.getJSON(url, function (result) {
+			if (result.value) {
+				$("#id_item_value").val( result.value );
 				update_total();
 			}
-		}
-	});
-
+		});
 }
 
 function update_total() {
 	$("#id_total").val( $("#id_item_value").val() * $("#id_amount").val() );
 }
 
+function filter_items_by_category() {
+	var id_category = $(this).val();
+	var url = "{% url 'cashflow:category_items' pk=0 %}".replace("0", id_category);
+	$("#id_item")
+		.find('option')
+		.remove()
+		.end()
+		.append('<option value>---------</option>');
+	$.getJSON(url, function(result) {
+		var options = $("#id_item");
+		$.each(result.items, function(i, item) {
+			options.append($("<option />").val(item.id).text(item.name));
+		});
+		//$("#theSelect").html(options.join(''));
+	});
+}
+
+$("#id_category").change(filter_items_by_category);
 $("#id_amount").change(update_total);
 $("#id_item_value").change(update_total);
 $("#id_item").change(update_item_value);
 
 $('.date').daterangepicker({
 	singleDatePicker: true,
-	//autoUpdateInput: false,
+    autoUpdateInput: false,
 	locale:	{
 		format: 'DD/MM/YYYY'
 	}

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Group, Person, Item, CostCenter, Method, Transaction
+from .models import Group, Person, Item, CostCenter, Method, Transaction, Category
 
 admin.site.register(Group)
 
@@ -15,3 +15,5 @@ admin.site.register(CostCenter)
 admin.site.register(Method)
 
 admin.site.register(Transaction)
+
+admin.site.register(Category)
