@@ -47,6 +47,9 @@ def transaction_remove(request, pk):
 	transaction.delete()
 	return redirect('cashflow:index')
 
+def transaction_report(request):
+	report = Transaction.objects.values('paid_at').annotate(total=Sum("total")).order_by()
+	return render(request, 'cashflow/transaction_report.html', {'report': report})
 
 class PersonListView(generic.ListView):
     model = Person
@@ -82,8 +85,3 @@ def item_get_value(request, pk):
 		'value': item.value
 	}
 	return JsonResponse(data)
-
-def transaction_report(request):
-    #Job.objects.values('userId').annotate(c=Count('userId')).values('userId__name','c')
-	report = Transaction.objects.values('paid_at').annotate(total=Sum("total")).order_by()
-	return render(request, 'cashflow/transaction_report.html', {'report': report})
