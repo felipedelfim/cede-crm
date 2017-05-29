@@ -73,12 +73,12 @@ $("#id_amount").change(update_total);
 $("#id_item_value").change(update_total);
 $("#id_item").change(update_item_value);
 
-$('.date').daterangepicker({
-	singleDatePicker: true,
-    autoUpdateInput: false,
-	locale:	{
-		format: 'DD/MM/YYYY'
-	}
+$('.date').datepicker({
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
 });
 
 </script>
