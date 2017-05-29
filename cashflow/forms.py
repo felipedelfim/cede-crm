@@ -39,3 +39,6 @@ class PersonForm(forms.ModelForm):
 class PersonImportForm(forms.Form):
     group = forms.ModelChoiceField(queryset=Group.objects.order_by('name'), empty_label="---------")
     person_list = forms.CharField(label='Frequentadores', widget=forms.Textarea, help_text='1 nome por linha')
+
+class TransactionReportFilterForm(forms.Form):
+    date_range = forms.CharField(label='Data')

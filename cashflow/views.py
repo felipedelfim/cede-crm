@@ -3,10 +3,11 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
 from django.db.models import Sum
+from django.utils import timezone
+import datetime
 
-
-from .models import Transaction, Item, Person, Group
-from .forms import TransactionForm, PersonForm, PersonImportForm
+from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
+from .forms import TransactionForm, PersonForm, PersonImportForm, TransactionReportFilterForm
 
 class IndexView(generic.ListView):
     model = Transaction
@@ -16,7 +17,7 @@ class IndexView(generic.ListView):
     queryset = Transaction.objects.order_by('-updated_at')
 
 def transaction_new(request):
-	if request.method == "POST":
+	if request.method == 'POST':
 		form = TransactionForm(request.POST)
 		if form.is_valid():
 			transaction = form.save()
@@ -27,7 +28,7 @@ def transaction_new(request):
 
 def transaction_edit(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
-	if request.method == "POST":
+	if request.method == 'POST':
 		form = TransactionForm(request.POST, instance=transaction)
 		if form.is_valid():
 			transaction = form.save()
@@ -48,8 +49,27 @@ def transaction_remove(request, pk):
 	return redirect('cashflow:index')
 
 def transaction_report(request):
-	report = Transaction.objects.values('paid_at').annotate(total=Sum("total")).order_by()
-	return render(request, 'cashflow/transaction_report.html', {'report': report})
+    if request.method == 'POST':
+        form = TransactionReportFilterForm(request.POST)
+        if form.is_valid():
+            date_range = form.cleaned_data['date_range']
+            start_at = datetime.datetime.strptime(date_range.split(' - ')[0], "%d/%m/%Y").date()
+            end_at = datetime.datetime.strptime(date_range.split(' - ')[1], "%d/%m/%Y").date()
+    else:
+        form = TransactionReportFilterForm()
+        start_at = datetime.date.today()
+        end_at = datetime.date.today()
+
+    report_by_paid_at = Transaction.objects.values('paid_at').filter(paid_at__gte=start_at, paid_at__lte=end_at).annotate(total=Sum('total')).order_by('-paid_at')
+    report_by_category = Category.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_method = Method.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_cost_center = CostCenter.objects.order_by('name').filter(item__transaction__paid_at__gte=start_at, item__transaction__paid_at__lte=end_at).annotate(total=Sum('item__transaction__total')).order_by('-total')
+    return render(request, 'cashflow/transaction_report.html',
+    {'form': form,
+    'report_by_paid_at': report_by_paid_at,
+    'report_by_category': report_by_category,
+    'report_by_method': report_by_method,
+    'report_by_cost_center': report_by_cost_center})
 
 class PersonListView(generic.ListView):
     model = Person
@@ -59,7 +79,7 @@ class PersonListView(generic.ListView):
     queryset = Person.objects.order_by('name')
 
 def person_new(request):
-	if request.method == "POST":
+	if request.method == 'POST':
 		form = PersonForm(request.POST)
 		if form.is_valid():
 			person = form.save()
@@ -70,7 +90,7 @@ def person_new(request):
 
 def person_edit(request, pk):
 	person = get_object_or_404(Person, pk=pk)
-	if request.method == "POST":
+	if request.method == 'POST':
 		form = PersonForm(request.POST, instance=person)
 		if form.is_valid():
 			person = form.save()
@@ -80,7 +100,7 @@ def person_edit(request, pk):
 	return render(request, 'cashflow/person_edit.html', {'form': form})
 
 def person_import(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PersonImportForm(request.POST)
         if form.is_valid():
             for name in form.cleaned_data['person_list'].splitlines():
