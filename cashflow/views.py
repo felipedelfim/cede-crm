@@ -5,8 +5,8 @@ from django.views import generic
 from django.db.models import Sum
 
 
-from .models import Transaction, Item, Person
-from .forms import TransactionForm, PersonForm
+from .models import Transaction, Item, Person, Group
+from .forms import TransactionForm, PersonForm, PersonImportForm
 
 class IndexView(generic.ListView):
     model = Transaction
@@ -78,6 +78,20 @@ def person_edit(request, pk):
 	else:
 		form = PersonForm(instance=person)
 	return render(request, 'cashflow/person_edit.html', {'form': form})
+
+def person_import(request):
+    if request.method == "POST":
+        form = PersonImportForm(request.POST)
+        if form.is_valid():
+            for name in form.cleaned_data['person_list'].splitlines():
+                person = Person(group=form.cleaned_data['group'], name=name)
+                person.save()
+            return redirect('cashflow:person_list')
+    else:
+        form = PersonImportForm()
+
+    return render(request, 'cashflow/person_import.html', {'form': form})
+
 
 def item_get_value(request, pk):
 	item = get_object_or_404(Item, pk=pk)

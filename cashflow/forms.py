@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction, Person
+from .models import Transaction, Person, Group
 from django.utils.translation import ugettext_lazy as _
 
 class TransactionForm(forms.ModelForm):
@@ -35,3 +35,7 @@ class PersonForm(forms.ModelForm):
         widgets = {
             'phone_number': forms.TextInput(attrs={'class':'phone'}),
         }
+
+class PersonImportForm(forms.Form):
+    group = forms.ModelChoiceField(queryset=Group.objects.order_by('name'), empty_label="---------")
+    person_list = forms.CharField(label='Frequentadores', widget=forms.Textarea, help_text='1 nome por linha')
