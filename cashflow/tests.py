@@ -19,3 +19,11 @@ class TransactionMethodTests(TestCase):
 		transaction = Transaction(item=Item('Item 1'),person=Person('Person 1'),method=Method('Cash'))
 		transaction.pay()
 		self.assertIs(transaction.was_paid(), True)
+
+	def test_paid_transacted_at(self):
+		transaction = Transaction(item=Item('Item 1'),person=Person('Person 1'),method=Method('Cash'),paid_at=datetime.datetime(2017, 1, 1))
+		self.assertEqual(transaction.transacted_at, transaction.paid_at)
+
+	def test_unpaid_transacted_at(self):
+		transaction = Transaction(item=Item('Item 1'),person=Person('Person 1'),method=Method('Cash'))
+		self.assertEqual(transaction.transacted_at, transaction.created_at)

@@ -9,6 +9,11 @@ class Transaction(models.Model):
 		return self.paid_at is not None
 	def pay(self):
 		self.paid_at = timezone.now()
+	@property
+	def transacted_at(self):
+		if self.was_paid():
+			return self.paid_at
+		return self.created_at
 	category = models.ForeignKey('Category', on_delete=models.CASCADE)
 	item = models.ForeignKey('Item', on_delete=models.CASCADE)
 	person = models.ForeignKey('Person', on_delete=models.CASCADE)

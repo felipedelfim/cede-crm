@@ -26,6 +26,7 @@
 							<th> Item </th>
 							<th> Quantidade </th>
 							<th> Total </th>
+							<th> Data </th>
 							<th> Forma </th>
 							<th> Status </th>
 							<th> Ações </th>
@@ -39,6 +40,7 @@
 							<td> {{ transaction.item.name }} </td>
 							<td> {{ transaction.amount }} </td>
 							<td> {{ transaction.total }} </td>
+							<td> {{ transaction.transacted_at|date:"d/m/y" }} </td>
 							<td> {{ transaction.method.name }} </td>
 							<td>
 								{% if transaction.was_paid %}
