@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.utils import timezone
 import datetime
 
-from .models import Transaction, Item, Person, Group, Category, Method
+from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
 from .forms import TransactionForm, PersonForm, PersonImportForm, TransactionReportFilterForm
 
 class IndexView(generic.ListView):
@@ -14,7 +14,6 @@ class IndexView(generic.ListView):
     template_name = 'cadhflow/transaction_list.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'transactions'  # Default: object_list
     paginate_by = 25
-    queryset = Transaction.objects.order_by('-updated_at')
 
 def transaction_new(request):
 	if request.method == 'POST':
