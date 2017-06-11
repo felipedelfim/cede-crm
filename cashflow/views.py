@@ -63,12 +63,14 @@ def transaction_report(request):
     report_by_category = Category.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
     report_by_method = Method.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
     report_by_cost_center = CostCenter.objects.order_by('name').filter(item__transaction__paid_at__gte=start_at, item__transaction__paid_at__lte=end_at).annotate(total=Sum('item__transaction__total')).order_by('-total')
+    report_by_person = Person.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
     return render(request, 'cashflow/transaction_report.html',
     {'form': form,
     'report_by_paid_at': report_by_paid_at,
     'report_by_category': report_by_category,
     'report_by_method': report_by_method,
-    'report_by_cost_center': report_by_cost_center})
+    'report_by_cost_center': report_by_cost_center,
+    'report_by_person': report_by_person})
 
 class PersonListView(generic.ListView):
     model = Person
