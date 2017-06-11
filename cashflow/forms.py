@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction, Person, Group
+from .models import Transaction, Person, Group, Category, CostCenter
 from django.utils.translation import ugettext_lazy as _
 
 class TransactionForm(forms.ModelForm):
@@ -39,6 +39,12 @@ class PersonForm(forms.ModelForm):
 class PersonImportForm(forms.Form):
     group = forms.ModelChoiceField(queryset=Group.objects.order_by('name'), empty_label="---------")
     person_list = forms.CharField(label='Frequentadores', widget=forms.Textarea, help_text='1 nome por linha')
+
+class ItemImportForm(forms.Form):
+    category = forms.ModelChoiceField(queryset=Category.objects.order_by('name'), empty_label="---------")
+    cost_center = forms.ModelChoiceField(queryset=CostCenter.objects.order_by('name'), empty_label="---------")
+    value = forms.FloatField(label='Valor')
+    item_list = forms.CharField(label='Itens', widget=forms.Textarea, help_text='1 nome por linha')
 
 class TransactionReportFilterForm(forms.Form):
     date_range = forms.CharField(label='Data')

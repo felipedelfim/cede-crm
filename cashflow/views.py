@@ -7,7 +7,7 @@ from django.utils import timezone
 import datetime
 
 from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
-from .forms import TransactionForm, PersonForm, PersonImportForm, TransactionReportFilterForm
+from .forms import TransactionForm, PersonForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm
 
 class IndexView(generic.ListView):
     model = Transaction
@@ -75,7 +75,6 @@ class PersonListView(generic.ListView):
     template_name = 'cadhflow/person_list.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'persons'  # Default: object_list
     paginate_by = 25
-    queryset = Person.objects.order_by('name')
 
 def person_new(request):
 	if request.method == 'POST':
@@ -111,6 +110,11 @@ def person_import(request):
 
     return render(request, 'cashflow/person_import.html', {'form': form})
 
+class ItemListView(generic.ListView):
+    model = Item
+    template_name = 'cadhflow/item_list.html'  # Default: <app_label>/<model_name>_list.html
+    context_object_name = 'items'  # Default: object_list
+    paginate_by = 25
 
 def item_get_value(request, pk):
 	item = get_object_or_404(Item, pk=pk)
@@ -118,6 +122,19 @@ def item_get_value(request, pk):
 		'value': item.value
 	}
 	return JsonResponse(data)
+
+def item_import(request):
+    if request.method == 'POST':
+        form = ItemImportForm(request.POST)
+        if form.is_valid():
+            for name in form.cleaned_data['item_list'].splitlines():
+                item = Item(category=form.cleaned_data['category'], cost_center=form.cleaned_data['cost_center'], value=form.cleaned_data['value'], name=name)
+                item.save()
+            return redirect('cashflow:item_list')
+    else:
+        form = ItemImportForm()
+
+    return render(request, 'cashflow/item_import.html', {'form': form})
 
 def category_items(request, pk):
     items = get_list_or_404(Item, category_id=pk)
