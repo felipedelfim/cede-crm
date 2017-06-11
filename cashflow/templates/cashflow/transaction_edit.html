@@ -48,7 +48,7 @@ function update_item_value() {
 }
 
 function update_total() {
-	$("#id_total").val( $("#id_item_value").val() * $("#id_amount").val() );
+	$("#id_total").val( parseFloat( $("#id_item_value").val() * $("#id_amount").val() ).toFixed(2) );
 }
 
 function filter_items_by_category() {
@@ -69,9 +69,9 @@ function filter_items_by_category() {
 }
 
 $("#id_category").change(filter_items_by_category);
-$("#id_amount").change(update_total);
-$("#id_item_value").change(update_total);
-$("#id_item").change(update_item_value);
+$("#id_amount").keyup(update_total);
+$("#id_item_value").keyup(update_total);
+$("#id_item").keyup(update_item_value);
 
 $('.date').datepicker({
     todayBtn: "linked",
@@ -80,6 +80,8 @@ $('.date').datepicker({
     autoclose: true,
     todayHighlight: true
 });
+
+$('select').selectize();
 
 </script>
 {% endblock %}

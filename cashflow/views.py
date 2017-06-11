@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.utils import timezone
 import datetime
 
-from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
+from .models import Transaction, Item, Person, Group, Category, Method
 from .forms import TransactionForm, PersonForm, PersonImportForm, TransactionReportFilterForm
 
 class IndexView(generic.ListView):

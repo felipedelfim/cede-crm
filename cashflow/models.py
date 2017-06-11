@@ -9,8 +9,7 @@ class Transaction(models.Model):
 		return self.paid_at is not None
 	def pay(self):
 		self.paid_at = timezone.now()
-	@property
-	def transacted_at(self):
+	def _get_transacted_at(self):
 		if self.was_paid():
 			return self.paid_at
 		return self.created_at
@@ -25,6 +24,9 @@ class Transaction(models.Model):
 	paid_at = models.DateField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+	transacted_at = property(_get_transacted_at)
+	class Meta:
+		ordering = ["-updated_at"]
 
 class Method(models.Model):
 	def __str__(self):
@@ -32,6 +34,8 @@ class Method(models.Model):
 	name = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+	class Meta:
+		ordering = ["name"]
 
 class Item(models.Model):
 	def __str__(self):
@@ -42,16 +46,22 @@ class Item(models.Model):
 	value = models.FloatField(default=1.00)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+	class Meta:
+		ordering = ["name"]
 
 class CostCenter(models.Model):
 	def __str__(self):
 		return self.name
 	name = models.CharField(max_length=200)
+	class Meta:
+		ordering = ["name"]
 
 class Category(models.Model):
 	def __str__(self):
 		return self.name
 	name = models.CharField(max_length=200)
+	class Meta:
+		ordering = ["name"]
 
 class Person(models.Model):
 	def __str__(self):
@@ -61,6 +71,8 @@ class Person(models.Model):
 	group = models.ForeignKey('Group', on_delete=models.CASCADE)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+	class Meta:
+		ordering = ["name"]
 
 class Group(models.Model):
 	def __str__(self):
@@ -68,3 +80,5 @@ class Group(models.Model):
 	name = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
+	class Meta:
+		ordering = ["name"]
