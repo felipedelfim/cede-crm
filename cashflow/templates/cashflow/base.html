@@ -48,7 +48,7 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="index.html">CEDE - Fluxo de Caixa</a>
+				<a class="navbar-brand" href="{% url 'cashflow:transaction_list' %}">CEDE - Fluxo de Caixa</a>
 			</div>
 			<!-- /.navbar-header -->
 
@@ -59,7 +59,7 @@
 							<a href="#"><i class="fa fa-exchange fa-fw"></i> Transações<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li>
-									<a href="{% url 'cashflow:index' %}"> Listar </a>
+									<a href="{% url 'cashflow:transaction_list' %}"> Listar </a>
 								</li>
 								<li>
 									<a href="{% url 'cashflow:transaction_new' %}"> Adicionar </a>

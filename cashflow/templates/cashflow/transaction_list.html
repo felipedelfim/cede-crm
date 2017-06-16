@@ -13,6 +13,24 @@
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				Filtros
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<form method="POST" class="post-form">{% csrf_token %}
+						{% include "cashflow/form_filter_snippet.html" %}
+						<div class="col-lg-4">
+							<button type="submit" class="save btn btn-default">Aplicar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
 				Lista
 			</div>
 			<!-- /.panel-heading -->
@@ -51,8 +69,8 @@
 							</td>
 							<td>
 								<div class="btn-group">
-									<a type="button" class="btn btn-primary btn-sm" href="{% url 'cashflow:transaction_edit' pk=transaction.pk %}">Editar</a>
-									<a type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<a type="button" class="btn btn-primary btn-xs" href="{% url 'cashflow:transaction_edit' pk=transaction.pk %}">Editar</a>
+									<a type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">

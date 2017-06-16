@@ -18,8 +18,10 @@
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form method="POST" class="post-form">{% csrf_token %}
-					{% include "cashflow/form_snippet.html" %}
-					<button type="submit" class="save btn btn-default">Aplicar</button>
+					{% include "cashflow/form_filter_snippet.html" %}
+					<div class="col-lg-4">
+						<button type="submit" class="save btn btn-default">Aplicar</button>
+					</div>
 				</form>
 			</div>
 			<!-- /.panel-body -->
@@ -190,7 +192,7 @@
 <script>
 	$('#id_date_range').daterangepicker({
 		'alwaysShowCalendars': true,
-		'opens': 'left',
+		'opens': 'right',
 		'locale': {
 			'format': 'DD/MM/YYYY',
 			'separator': ' - ',

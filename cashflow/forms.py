@@ -37,14 +37,18 @@ class PersonForm(forms.ModelForm):
         }
 
 class PersonImportForm(forms.Form):
-    group = forms.ModelChoiceField(queryset=Group.objects.order_by('name'), empty_label="---------")
+    group = forms.ModelChoiceField(queryset=Group.objects.order_by('name'), empty_label="---------", label='Grupo')
     person_list = forms.CharField(label='Frequentadores', widget=forms.Textarea, help_text='1 nome por linha')
 
 class ItemImportForm(forms.Form):
-    category = forms.ModelChoiceField(queryset=Category.objects.order_by('name'), empty_label="---------")
-    cost_center = forms.ModelChoiceField(queryset=CostCenter.objects.order_by('name'), empty_label="---------")
+    category = forms.ModelChoiceField(queryset=Category.objects.order_by('name'), empty_label="---------", label='Categoria')
+    cost_center = forms.ModelChoiceField(queryset=CostCenter.objects.order_by('name'), empty_label="---------", label='Centro de Custo')
     value = forms.FloatField(label='Valor')
     item_list = forms.CharField(label='Itens', widget=forms.Textarea, help_text='1 nome por linha')
 
 class TransactionReportFilterForm(forms.Form):
     date_range = forms.CharField(label='Data')
+
+class TransactionListFilterForm(forms.Form):
+    person = forms.ModelChoiceField(queryset=Person.objects.order_by('name'), empty_label="Todos", label='Frequentador', required=False)
+    status = forms.ChoiceField(choices=(('all', 'Todos'),('paid','Pago'),('unpaid','Não Pago')))

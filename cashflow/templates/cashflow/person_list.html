@@ -34,7 +34,7 @@
 							<td> {{ person.group.name }} </td>
 							<td> {{ person.phone_number }} </td>
 							<td>
-								<a type="button" class="btn btn-primary btn-sm" href="{% url 'cashflow:person_edit' pk=person.pk %}">Editar</a>
+								<a type="button" class="btn btn-primary btn-xs" href="{% url 'cashflow:person_edit' pk=person.pk %}">Editar</a>
 							</td>
 						</tr>
 						{% endfor %}

@@ -3,17 +3,49 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import generic
 from django.db.models import Sum
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 import datetime
 
 from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
-from .forms import TransactionForm, PersonForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm
+from .forms import TransactionForm, PersonForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm, TransactionListFilterForm
 
 class IndexView(generic.ListView):
     model = Transaction
     template_name = 'cadhflow/transaction_list.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'transactions'  # Default: object_list
     paginate_by = 25
+
+def transaction_list(request):
+    if request.method == 'POST':
+        form = TransactionListFilterForm(request.POST)
+        if form.is_valid():
+            transaction_list = Transaction.objects.all()
+            if form.cleaned_data['status'] == 'paid':
+                transaction_list = transaction_list.filter(paid_at__isnull=False)
+            if form.cleaned_data['status'] == 'unpaid':
+                transaction_list = transaction_list.filter(paid_at__isnull=True)
+            if form.cleaned_data['person']:
+                transaction_list = transaction_list.filter(person=form.cleaned_data['person'])
+    else:
+        form = TransactionListFilterForm(initial={'status': 'all'})
+        transaction_list = Transaction.objects.all()
+
+    paginator = Paginator(transaction_list, 25)
+
+    page = request.GET.get('page')
+    try:
+        transactions = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        transactions = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        transactions = paginator.page(paginator.num_pages)
+
+    return render(request, 'cashflow/transaction_list.html',
+    {'form': form,
+    'transactions': transactions })
 
 def transaction_new(request):
 	if request.method == 'POST':
