@@ -43,7 +43,7 @@ class PersonImportForm(forms.Form):
 class ItemImportForm(forms.Form):
     category = forms.ModelChoiceField(queryset=Category.objects.order_by('name'), empty_label="---------", label='Categoria')
     cost_center = forms.ModelChoiceField(queryset=CostCenter.objects.order_by('name'), empty_label="---------", label='Centro de Custo')
-    value = forms.FloatField(label='Valor')
+    value = forms.DecimalField(label='Valor')
     item_list = forms.CharField(label='Itens', widget=forms.Textarea, help_text='1 nome por linha')
 
 class TransactionReportFilterForm(forms.Form):

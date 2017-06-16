@@ -43,7 +43,7 @@ class Item(models.Model):
 	name = models.CharField(max_length=200)
 	category = models.ForeignKey('Category', on_delete=models.CASCADE)
 	cost_center = models.ForeignKey('CostCenter', on_delete=models.CASCADE)
-	value = models.FloatField(default=1.00)
+	value = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	class Meta:
