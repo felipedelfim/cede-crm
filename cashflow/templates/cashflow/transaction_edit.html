@@ -54,6 +54,7 @@ function update_total() {
 function filter_items_by_category() {
 	var id_category = $(this).val();
 	var url = "{% url 'cashflow:category_items' pk=0 %}".replace("0", id_category);
+	$('#id_item').selectize()[0].selectize.destroy();
 	$("#id_item")
 		.find('option')
 		.remove()
@@ -64,7 +65,7 @@ function filter_items_by_category() {
 		$.each(result.items, function(i, item) {
 			options.append($("<option />").val(item.id).text(item.name));
 		});
-		//$("#theSelect").html(options.join(''));
+		$('#id_item').selectize();
 	});
 }
 
