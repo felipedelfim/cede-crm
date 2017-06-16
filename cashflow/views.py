@@ -52,7 +52,7 @@ def transaction_new(request):
 		form = TransactionForm(request.POST)
 		if form.is_valid():
 			transaction = form.save()
-			return redirect('cashflow:index')
+			return redirect('cashflow:transaction_list')
 	else:
 		form = TransactionForm()
 	return render(request, 'cashflow/transaction_edit.html', {'form': form})
@@ -63,7 +63,7 @@ def transaction_edit(request, pk):
 		form = TransactionForm(request.POST, instance=transaction)
 		if form.is_valid():
 			transaction = form.save()
-			return redirect('cashflow:index')
+			return redirect('cashflow:transaction_list')
 	else:
 		form = TransactionForm(instance=transaction)
 	return render(request, 'cashflow/transaction_edit.html', {'form': form})
@@ -72,12 +72,12 @@ def transaction_pay(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
 	transaction.pay()
 	transaction.save()
-	return redirect('cashflow:index')
+	return redirect('cashflow:transaction_list')
 
 def transaction_remove(request, pk):
 	transaction = get_object_or_404(Transaction, pk=pk)
 	transaction.delete()
-	return redirect('cashflow:index')
+	return redirect('cashflow:transaction_list')
 
 def transaction_report(request):
     if request.method == 'POST':

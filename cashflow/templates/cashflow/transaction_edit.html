@@ -37,7 +37,7 @@
 <script>
 
 function update_item_value() {
-	var id_item = $(this).val();
+	var id_item = $('#id_item').val();
 	var url = "{% url 'cashflow:item_get_value' pk=0 %}".replace("0", id_item);
 	$.getJSON(url, function (result) {
 			if (result.value) {
@@ -72,7 +72,7 @@ function filter_items_by_category() {
 $("#id_category").change(filter_items_by_category);
 $("#id_amount").keyup(update_total);
 $("#id_item_value").keyup(update_total);
-$("#id_item").keyup(update_item_value);
+$("#id_item").change(update_item_value);
 
 $('.date').datepicker({
     todayBtn: "linked",
