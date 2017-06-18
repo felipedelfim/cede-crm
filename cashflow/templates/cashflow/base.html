@@ -140,6 +140,12 @@
 
 	<script>
 		$('select').selectize();
+		$('button[type="reset"]').click(function(){
+			window.location = window.location;
+		});
+		$('form').submit(function(){
+			$('.save').prop('disabled', true);
+		});
 	</script>
 
 	{% block script %}

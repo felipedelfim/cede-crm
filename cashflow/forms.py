@@ -19,7 +19,7 @@ class TransactionForm(forms.ModelForm):
             'paid_at': _('Pago em'),
         }
         widgets = {
-            'paid_at': forms.DateInput(format='%d-%m-%Y', attrs={'class':'date'}),
+            'paid_at': forms.DateInput(format='%d/%m/%Y', attrs={'class':'date'}),
         }
 
 class PersonForm(forms.ModelForm):

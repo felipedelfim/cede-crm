@@ -21,7 +21,8 @@
 					<form method="POST" class="post-form">{% csrf_token %}
 						{% include "cashflow/form_filter_snippet.html" %}
 						<div class="col-lg-4">
-							<button type="submit" class="save btn btn-default">Aplicar</button>
+							<button type="submit" class="btn btn-default">Filtrar</button>
+							<button type="reset" class="btn btn-default">Limpar</button>
 						</div>
 					</form>
 				</div>
@@ -42,7 +43,7 @@
 							<th> Frequentador </th>
 							<th> Grupo </th>
 							<th> Item </th>
-							<th> Quantidade </th>
+							<th> Qtd. </th>
 							<th> Total </th>
 							<th> Data </th>
 							<th> Forma </th>

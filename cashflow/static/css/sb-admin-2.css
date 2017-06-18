@@ -432,6 +432,6 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
-.col-lg-4 .save {
+.col-lg-4 .btn {
     margin-top: 18pt;
 }

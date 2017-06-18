@@ -10,12 +10,6 @@ import datetime
 from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
 from .forms import TransactionForm, PersonForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm, TransactionListFilterForm
 
-class IndexView(generic.ListView):
-    model = Transaction
-    template_name = 'cadhflow/transaction_list.html'  # Default: <app_label>/<model_name>_list.html
-    context_object_name = 'transactions'  # Default: object_list
-    paginate_by = 25
-
 def transaction_list(request):
     if request.method == 'POST':
         form = TransactionListFilterForm(request.POST)
@@ -96,13 +90,15 @@ def transaction_report(request):
     report_by_method = Method.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
     report_by_cost_center = CostCenter.objects.order_by('name').filter(item__transaction__paid_at__gte=start_at, item__transaction__paid_at__lte=end_at).annotate(total=Sum('item__transaction__total')).order_by('-total')
     report_by_person = Person.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_item = Item.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
     return render(request, 'cashflow/transaction_report.html',
     {'form': form,
     'report_by_paid_at': report_by_paid_at,
     'report_by_category': report_by_category,
     'report_by_method': report_by_method,
     'report_by_cost_center': report_by_cost_center,
-    'report_by_person': report_by_person})
+    'report_by_person': report_by_person,
+    'report_by_item': report_by_item})
 
 class PersonListView(generic.ListView):
     model = Person
@@ -136,8 +132,9 @@ def person_import(request):
         form = PersonImportForm(request.POST)
         if form.is_valid():
             for name in form.cleaned_data['person_list'].splitlines():
-                person = Person(group=form.cleaned_data['group'], name=name)
-                person.save()
+                if Person.objects.filter(name=name).exists() == False:
+                    person = Person(group=form.cleaned_data['group'], name=name)
+                    person.save()
             return redirect('cashflow:person_list')
     else:
         form = PersonImportForm()
@@ -162,8 +159,9 @@ def item_import(request):
         form = ItemImportForm(request.POST)
         if form.is_valid():
             for name in form.cleaned_data['item_list'].splitlines():
-                item = Item(category=form.cleaned_data['category'], cost_center=form.cleaned_data['cost_center'], value=form.cleaned_data['value'], name=name)
-                item.save()
+                if Item.objects.filter(name=name).exists() == False:
+                    item = Item(category=form.cleaned_data['category'], cost_center=form.cleaned_data['cost_center'], value=form.cleaned_data['value'], name=name)
+                    item.save()
             return redirect('cashflow:item_list')
     else:
         form = ItemImportForm()
