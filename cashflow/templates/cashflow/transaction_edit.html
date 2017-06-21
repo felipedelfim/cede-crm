@@ -39,9 +39,9 @@
 function update_item_value() {
 	var id_item = $('#id_item').val();
 	var url = "{% url 'cashflow:item_get_value' pk=0 %}".replace("0", id_item);
-	$.getJSON(url, function (result) {
-			if (result.value) {
-				$("#id_item_value").val( result.value );
+	$.getJSON(url, function (response) {
+			if (response.value) {
+				$("#id_item_value").val( response.value );
 				update_total();
 			}
 		});
@@ -60,9 +60,9 @@ function filter_items_by_category() {
 		.remove()
 		.end()
 		.append('<option value>---------</option>');
-	$.getJSON(url, function(result) {
+	$.getJSON(url, function(response) {
 		var options = $("#id_item");
-		$.each(result.items, function(i, item) {
+		$.each(response.items, function(i, item) {
 			options.append($("<option />").val(item.id).text(item.name));
 		});
 		$('#id_item').selectize();

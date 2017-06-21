@@ -13,6 +13,10 @@ class Transaction(models.Model):
 		if self.was_paid():
 			return self.paid_at
 		return self.created_at
+	def save(self, *args, **kwargs):
+		if not self.pk:
+			self.item.add_inventory(-1 * self.amount)
+		super(Transaction, self).save(args, kwargs)
 	category = models.ForeignKey('Category', on_delete=models.CASCADE)
 	item = models.ForeignKey('Item', on_delete=models.CASCADE)
 	person = models.ForeignKey('Person', on_delete=models.CASCADE)
@@ -40,10 +44,16 @@ class Method(models.Model):
 class Item(models.Model):
 	def __str__(self):
 		return self.name
+	def add_inventory(self, amount):
+		self.inventory += amount
+		if self.inventory < 0:
+			self.inventory = 0
+		self.save()
 	name = models.CharField(max_length=200)
 	category = models.ForeignKey('Category', on_delete=models.CASCADE)
 	cost_center = models.ForeignKey('CostCenter', on_delete=models.CASCADE)
 	value = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
+	inventory = models.IntegerField(default=0)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	class Meta:

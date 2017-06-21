@@ -5,10 +5,11 @@ from django.views import generic
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 from .models import Transaction, Item, Person, Group, Category, Method, CostCenter
-from .forms import TransactionForm, PersonForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm, TransactionListFilterForm
+from .forms import TransactionForm, PersonForm, ItemForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm, TransactionListFilterForm, ItemListFilterForm, PersonListFilterForm
 
 def transaction_list(request):
     if request.method == 'POST':
@@ -100,11 +101,34 @@ def transaction_report(request):
     'report_by_person': report_by_person,
     'report_by_item': report_by_item})
 
-class PersonListView(generic.ListView):
-    model = Person
-    template_name = 'cadhflow/person_list.html'  # Default: <app_label>/<model_name>_list.html
-    context_object_name = 'persons'  # Default: object_list
-    paginate_by = 25
+def person_list(request):
+    if request.method == 'POST':
+        form = PersonListFilterForm(request.POST)
+        if form.is_valid():
+            person_list = Person.objects.all()
+            if form.cleaned_data['person']:
+                person_list = person_list.filter(id=form.cleaned_data['person'].id)
+            if form.cleaned_data['group']:
+                person_list = person_list.filter(group=form.cleaned_data['group'])
+    else:
+        form = PersonListFilterForm()
+        person_list = Person.objects.all()
+
+    paginator = Paginator(person_list, 25)
+
+    page = request.GET.get('page')
+    try:
+        persons = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        persons = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        persons = paginator.page(paginator.num_pages)
+
+    return render(request, 'cashflow/person_list.html',
+    {'form': form,
+    'persons': persons })
 
 def person_new(request):
 	if request.method == 'POST':
@@ -141,18 +165,56 @@ def person_import(request):
 
     return render(request, 'cashflow/person_import.html', {'form': form})
 
-class ItemListView(generic.ListView):
-    model = Item
-    template_name = 'cadhflow/item_list.html'  # Default: <app_label>/<model_name>_list.html
-    context_object_name = 'items'  # Default: object_list
-    paginate_by = 25
+def item_list(request):
+    if request.method == 'POST':
+        form = ItemListFilterForm(request.POST)
+        if form.is_valid():
+            item_list = Item.objects.all()
+            if form.cleaned_data['item']:
+                item_list = item_list.filter(id=form.cleaned_data['item'].id)
+            if form.cleaned_data['category']:
+                item_list = item_list.filter(category=form.cleaned_data['category'])
+            if form.cleaned_data['cost_center']:
+                item_list = item_list.filter(cost_center=form.cleaned_data['cost_center'])
+    else:
+        form = ItemListFilterForm()
+        item_list = Item.objects.all()
+
+    paginator = Paginator(item_list, 25)
+
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+
+    return render(request, 'cashflow/item_list.html',
+    {'form': form,
+    'items': items })
+
 
 def item_get_value(request, pk):
 	item = get_object_or_404(Item, pk=pk)
 	data = {
 		'value': item.value
-	}
+		}
 	return JsonResponse(data)
+
+@csrf_exempt
+def item_inventory_add(request, pk):
+    if request.method == 'POST':
+        item = get_object_or_404(Item, pk=pk)
+        if request.POST['amount']:
+            item.add_inventory(int(request.POST['amount']))
+        data = {
+            'id': item.id,
+            'inventory': item.inventory
+            }
+        return JsonResponse(data)
 
 def item_import(request):
     if request.method == 'POST':
@@ -160,13 +222,24 @@ def item_import(request):
         if form.is_valid():
             for name in form.cleaned_data['item_list'].splitlines():
                 if Item.objects.filter(name=name).exists() == False:
-                    item = Item(category=form.cleaned_data['category'], cost_center=form.cleaned_data['cost_center'], value=form.cleaned_data['value'], name=name)
+                    item = Item(category=form.cleaned_data['category'], cost_center=form.cleaned_data['cost_center'], name=name)
                     item.save()
             return redirect('cashflow:item_list')
     else:
         form = ItemImportForm()
 
     return render(request, 'cashflow/item_import.html', {'form': form})
+
+def item_edit(request, pk):
+	item = get_object_or_404(Item, pk=pk)
+	if request.method == 'POST':
+		form = ItemForm(request.POST, instance=item)
+		if form.is_valid():
+			person = form.save()
+			return redirect('cashflow:item_list')
+	else:
+		form = ItemForm(instance=item)
+	return render(request, 'cashflow/item_edit.html', {'form': form})
 
 def category_items(request, pk):
     items = get_list_or_404(Item, category_id=pk)
