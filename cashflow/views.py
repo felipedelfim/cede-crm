@@ -22,6 +22,8 @@ def transaction_list(request):
                 transaction_list = transaction_list.filter(paid_at__isnull=True)
             if form.cleaned_data['person']:
                 transaction_list = transaction_list.filter(person=form.cleaned_data['person'])
+            if form.cleaned_data['item']:
+                transaction_list = transaction_list.filter(item=form.cleaned_data['item'])
     else:
         form = TransactionListFilterForm(initial={'status': 'all'})
         transaction_list = Transaction.objects.all()

@@ -63,6 +63,7 @@ class TransactionReportFilterForm(forms.Form):
 
 class TransactionListFilterForm(forms.Form):
     person = forms.ModelChoiceField(queryset=Person.objects.order_by('name'), empty_label="Todos", label='Frequentador', required=False)
+    item = forms.ModelChoiceField(queryset=Item.objects.order_by('name'), empty_label="Todos", label='Item', required=False)
     status = forms.ChoiceField(choices=(('all', 'Todos'),('paid','Pago'),('unpaid','Não Pago')))
 
 class ItemListFilterForm(forms.Form):
