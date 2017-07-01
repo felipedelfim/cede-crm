@@ -1,4 +1,4 @@
-{% extends 'cashflow/base.html' %}
+﻿{% extends 'cashflow/base.html' %}
 
 {% block content %}
 <div class="row">
@@ -195,6 +195,7 @@
 					<thead>
 						<tr>
 							<th> Item </th>
+							<th class="col-md-1"> Quant. </th>
 							<th class="col-md-1"> Saldo </th>
 						</tr>
 					</thead>
@@ -202,6 +203,7 @@
 						{% for row in report_by_item %}
 						<tr>
 							<td> {{ row.name }} </td>
+							<td class="text-right"> {{ row.amount }} </td>
 							<td class="text-right"> {{ row.total }} </td>
 						</tr>
 						{% endfor %}
