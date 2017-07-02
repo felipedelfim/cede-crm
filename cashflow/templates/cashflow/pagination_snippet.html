@@ -1,23 +1,46 @@
 {% if is_paginated %}
-  <nav aria-label="Paginação">
+<nav aria-label="Paginação">
     <ul class="pagination">
-      {% if page_obj.has_previous %}
+        {% if page_obj.has_previous %}
         <li><a href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a></li>
-      {% else %}
-        <li class="disabled"><a href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a></li>
-      {% endif %}
-      {% for i in paginator.page_range %}
-        {% if page_obj.number == i %}
-          <li class="active"><a href="#">{{ i }}</a></li>
         {% else %}
-          <li><a href="?page={{ i }}">{{ i }}</a></li>
+        <li class="disabled"><a href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
-      {% endfor %}
-      {% if page_obj.has_next %}
+        {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li class="active"><a href="#">{{ i }}</a></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
         <li><a href="?page={{ page_obj.next_page_number }}" aria-label="Próximo"><span aria-hidden="true">&raquo;</span></a></li>
-      {% else %}
+        {% else %}
         <li class="disabled"><a href="#" aria-label="Próximo"><span aria-hidden="true">&raquo;</span></a></li>
-      {% endif %}
+        {% endif %}
     </ul>
-  </nav>
+</nav>
+{% endif %}
+{% if object_list.has_other_pages %}
+<nav aria-label="Paginação">
+    <ul class="pagination">
+        {% if object_list.has_previous %}
+        <li><a href="?page={{ object_list.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in object_list.paginator.page_range %}
+        {% if object_list.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if object_list.has_next %}
+        <li><a href="?page={{ object_list.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+</nav>
 {% endif %}

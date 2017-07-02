@@ -36,7 +36,7 @@
 			</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				{% if persons %}
+				{% if object_list %}
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -47,7 +47,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for person in persons %}
+						{% for person in object_list %}
 						<tr>
 							<td> {{ person.name }} </td>
 							<td> {{ person.group.name }} </td>

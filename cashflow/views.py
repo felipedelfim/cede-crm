@@ -42,7 +42,7 @@ def transaction_list(request):
 
     return render(request, 'cashflow/transaction_list.html',
     {'form': form,
-    'transactions': transactions })
+    'object_list': transactions })
 
 def transaction_new(request):
 	if request.method == 'POST':
@@ -130,7 +130,7 @@ def person_list(request):
 
     return render(request, 'cashflow/person_list.html',
     {'form': form,
-    'persons': persons })
+    'object_list': persons })
 
 def person_new(request):
 	if request.method == 'POST':
@@ -196,7 +196,7 @@ def item_list(request):
 
     return render(request, 'cashflow/item_list.html',
     {'form': form,
-    'items': items })
+    'object_list': items })
 
 
 def item_get_value(request, pk):

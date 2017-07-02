@@ -36,7 +36,7 @@
 			</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				{% if transactions %}
+				{% if object_list %}
 				<table width="100%" class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -52,7 +52,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for transaction in transactions %}
+						{% for transaction in object_list %}
 						<tr>
 							<td> {{ transaction.person.name }} </td>
 							<td> {{ transaction.person.group.name }} </td>
@@ -92,7 +92,7 @@
 				</table>
 				{% include "cashflow/pagination_snippet.html" %}
 				{% else %}
-				<p>No transactions are available.</p>
+				<p>Não há transações disponíveis.</p>
 				{% endif %}
 			</div>
 			<!-- /.panel-body -->
