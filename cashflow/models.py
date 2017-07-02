@@ -17,10 +17,10 @@ class Transaction(models.Model):
 		if not self.pk:
 			self.item.add_inventory(-1 * self.amount)
 		super(Transaction, self).save(args, kwargs)
-	category = models.ForeignKey('Category', on_delete=models.CASCADE)
-	item = models.ForeignKey('Item', on_delete=models.CASCADE)
-	person = models.ForeignKey('Person', on_delete=models.CASCADE)
-	method = models.ForeignKey('Method', on_delete=models.CASCADE)
+	category = models.ForeignKey('Category', on_delete=models.PROTECT)
+	item = models.ForeignKey('Item', on_delete=models.PROTECT)
+	person = models.ForeignKey('Person', on_delete=models.PROTECT)
+	method = models.ForeignKey('Method', on_delete=models.PROTECT)
 	item_value = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	amount = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	total = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
@@ -35,7 +35,7 @@ class Transaction(models.Model):
 class Method(models.Model):
 	def __str__(self):
 		return self.name
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, unique=True)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	class Meta:
@@ -49,9 +49,9 @@ class Item(models.Model):
 		if self.inventory < 0:
 			self.inventory = 0
 		self.save()
-	name = models.CharField(max_length=200)
-	category = models.ForeignKey('Category', on_delete=models.CASCADE)
-	cost_center = models.ForeignKey('CostCenter', on_delete=models.CASCADE)
+	name = models.CharField(max_length=200, unique=True)
+	category = models.ForeignKey('Category', on_delete=models.PROTECT)
+	cost_center = models.ForeignKey('CostCenter', on_delete=models.PROTECT)
 	value = models.DecimalField(default=1.00, max_digits=6, decimal_places=2)
 	inventory = models.IntegerField(default=0)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
@@ -62,23 +62,23 @@ class Item(models.Model):
 class CostCenter(models.Model):
 	def __str__(self):
 		return self.name
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, unique=True)
 	class Meta:
 		ordering = ["name"]
 
 class Category(models.Model):
 	def __str__(self):
 		return self.name
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, unique=True)
 	class Meta:
 		ordering = ["name"]
 
 class Person(models.Model):
 	def __str__(self):
 		return self.name
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, unique=True)
 	phone_number = models.CharField(max_length=20, validators=[RegexValidator(regex=r'^\(?\d{2}?\)?\d{8,10}$', message="Phone number must be entered in the format: '(11)999999999'. Up to 15 digits allowed.")], blank=True) # validators should be a list
-	group = models.ForeignKey('Group', on_delete=models.CASCADE)
+	group = models.ForeignKey('Group', on_delete=models.PROTECT)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	class Meta:
@@ -87,7 +87,7 @@ class Person(models.Model):
 class Group(models.Model):
 	def __str__(self):
 		return self.name
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, unique=True)
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	class Meta:
