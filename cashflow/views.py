@@ -13,20 +13,15 @@ from .forms import TransactionForm, PersonForm, ItemForm, PersonImportForm, Item
 
 def transaction_list(request):
     if request.GET.get('reset'):
-        del request.session['transaction_list_filter_form']
+        request.session['transaction_list_filter_form'] = None
 
-    if request.method == 'POST':
-        request.session['transaction_list_filter_form'] = request.POST
-        form = TransactionListFilterForm(request.POST)
+    if get_form_data(request, 'transaction_list_filter_form') is not None:
+        form = TransactionListFilterForm(get_form_data(request, 'transaction_list_filter_form'))
     else:
-        if 'transaction_list_filter_form' in request.session:
-            form = TransactionListFilterForm(request.session['transaction_list_filter_form'])
-        else:
-            form = TransactionListFilterForm(initial={'status': 'all'})
+        form = TransactionListFilterForm(initial={'status':'all'})
 
     transaction_list = Transaction.objects.all()
     if form.is_valid():
-        transaction_list = Transaction.objects.all()
         if form.cleaned_data['status'] == 'paid':
             transaction_list = transaction_list.filter(paid_at__isnull=False)
         if form.cleaned_data['status'] == 'unpaid':
@@ -113,17 +108,17 @@ def transaction_report(request):
     'report_by_item': report_by_item})
 
 def person_list(request):
-    if request.method == 'POST':
-        form = PersonListFilterForm(request.POST)
-        if form.is_valid():
-            person_list = Person.objects.all()
-            if form.cleaned_data['person']:
-                person_list = person_list.filter(id=form.cleaned_data['person'].id)
-            if form.cleaned_data['group']:
-                person_list = person_list.filter(group=form.cleaned_data['group'])
-    else:
-        form = PersonListFilterForm()
-        person_list = Person.objects.all()
+    if request.GET.get('reset'):
+        request.session['person_list_filter_form'] = None
+
+    form = PersonListFilterForm(get_form_data(request, 'person_list_filter_form'))
+
+    person_list = Person.objects.all()
+    if form.is_valid():
+        if form.cleaned_data['person']:
+            person_list = person_list.filter(id=form.cleaned_data['person'].id)
+        if form.cleaned_data['group']:
+            person_list = person_list.filter(group=form.cleaned_data['group'])
 
     paginator = Paginator(person_list, 25)
 
@@ -182,19 +177,19 @@ def person_import(request):
     return render(request, 'cashflow/person_import.html', {'form': form})
 
 def item_list(request):
-    if request.method == 'POST':
-        form = ItemListFilterForm(request.POST)
-        if form.is_valid():
-            item_list = Item.objects.all()
-            if form.cleaned_data['item']:
-                item_list = item_list.filter(id=form.cleaned_data['item'].id)
-            if form.cleaned_data['category']:
-                item_list = item_list.filter(category=form.cleaned_data['category'])
-            if form.cleaned_data['cost_center']:
-                item_list = item_list.filter(cost_center=form.cleaned_data['cost_center'])
-    else:
-        form = ItemListFilterForm()
-        item_list = Item.objects.all()
+    if request.GET.get('reset'):
+        request.session['item_list_filter_form'] = None
+
+    form = ItemListFilterForm(get_form_data(request, 'item_list_filter_form'))
+
+    item_list = Item.objects.all()
+    if form.is_valid():
+        if form.cleaned_data['item']:
+            item_list = item_list.filter(id=form.cleaned_data['item'].id)
+        if form.cleaned_data['category']:
+            item_list = item_list.filter(category=form.cleaned_data['category'])
+        if form.cleaned_data['cost_center']:
+            item_list = item_list.filter(cost_center=form.cleaned_data['cost_center'])
 
     paginator = Paginator(item_list, 25)
 
@@ -272,3 +267,12 @@ def category_items(request, pk):
         })
     #return HttpJsonResponse(data, is_ajax=request.is_ajax())
     return JsonResponse({'items':data})
+
+
+def get_form_data(request, form):
+    if request.method == 'POST':
+        request.session[form] = request.POST
+    else:
+        if form not in request.session:
+            request.session[form] = None
+    return request.session[form]
