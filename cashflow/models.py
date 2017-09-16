@@ -29,6 +29,7 @@ class Transaction(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True) # set when it's created
 	updated_at = models.DateTimeField(auto_now=True) # set every time it's updated
 	transacted_at = property(_get_transacted_at)
+	is_deleted = models.BooleanField(default=False)
 	class Meta:
 		ordering = ["-updated_at"]
 

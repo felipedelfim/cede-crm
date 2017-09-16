@@ -31,6 +31,7 @@ def transaction_list(request):
         if form.cleaned_data['item']:
             transaction_list = transaction_list.filter(item=form.cleaned_data['item'])
 
+    transaction_list = transaction_list.filter(is_deleted=False)
 
     paginator = Paginator(transaction_list, 25)
 
@@ -76,9 +77,10 @@ def transaction_pay(request, pk):
 	return redirect('cashflow:transaction_list')
 
 def transaction_remove(request, pk):
-	transaction = get_object_or_404(Transaction, pk=pk)
-	transaction.delete()
-	return redirect('cashflow:transaction_list')
+    transaction = get_object_or_404(Transaction, pk=pk)
+    transaction.is_deleted = True
+    transaction.save()
+    return redirect('cashflow:transaction_list')
 
 def transaction_report(request):
     if request.method == 'POST':
@@ -92,12 +94,12 @@ def transaction_report(request):
         start_at = datetime.date.today()
         end_at = datetime.date.today()
 
-    report_by_paid_at = Transaction.objects.values('paid_at').filter(paid_at__gte=start_at, paid_at__lte=end_at).annotate(total=Sum('total')).order_by('-paid_at')
-    report_by_category = Category.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
-    report_by_method = Method.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
-    report_by_cost_center = CostCenter.objects.order_by('name').filter(item__transaction__paid_at__gte=start_at, item__transaction__paid_at__lte=end_at).annotate(total=Sum('item__transaction__total')).order_by('-total')
-    report_by_person = Person.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
-    report_by_item = Item.objects.order_by('name').filter(transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total'), amount=Sum('transaction__amount')).order_by('-total')
+    report_by_paid_at = Transaction.objects.values('paid_at').filter(is_deleted=False, paid_at__gte=start_at, paid_at__lte=end_at).annotate(total=Sum('total')).order_by('-paid_at')
+    report_by_category = Category.objects.order_by('name').filter(transaction__is_deleted=False, transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_method = Method.objects.order_by('name').filter(transaction__is_deleted=False, transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_cost_center = CostCenter.objects.order_by('name').filter(item__transaction__is_deleted=False, item__transaction__paid_at__gte=start_at, item__transaction__paid_at__lte=end_at).annotate(total=Sum('item__transaction__total')).order_by('-total')
+    report_by_person = Person.objects.order_by('name').filter(transaction__is_deleted=False, transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total')).order_by('-total')
+    report_by_item = Item.objects.order_by('name').filter(transaction__is_deleted=False, transaction__paid_at__gte=start_at, transaction__paid_at__lte=end_at).annotate(total=Sum('transaction__total'), amount=Sum('transaction__amount')).order_by('-total')
     return render(request, 'cashflow/transaction_report.html',
     {'form': form,
     'report_by_paid_at': report_by_paid_at,
