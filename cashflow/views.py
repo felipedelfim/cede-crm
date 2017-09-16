@@ -12,21 +12,30 @@ from .models import Transaction, Item, Person, Group, Category, Method, CostCent
 from .forms import TransactionForm, PersonForm, ItemForm, PersonImportForm, ItemImportForm, TransactionReportFilterForm, TransactionListFilterForm, ItemListFilterForm, PersonListFilterForm
 
 def transaction_list(request):
+    if request.GET.get('reset'):
+        del request.session['transaction_list_filter_form']
+
     if request.method == 'POST':
+        request.session['transaction_list_filter_form'] = request.POST
         form = TransactionListFilterForm(request.POST)
-        if form.is_valid():
-            transaction_list = Transaction.objects.all()
-            if form.cleaned_data['status'] == 'paid':
-                transaction_list = transaction_list.filter(paid_at__isnull=False)
-            if form.cleaned_data['status'] == 'unpaid':
-                transaction_list = transaction_list.filter(paid_at__isnull=True)
-            if form.cleaned_data['person']:
-                transaction_list = transaction_list.filter(person=form.cleaned_data['person'])
-            if form.cleaned_data['item']:
-                transaction_list = transaction_list.filter(item=form.cleaned_data['item'])
     else:
-        form = TransactionListFilterForm(initial={'status': 'all'})
+        if 'transaction_list_filter_form' in request.session:
+            form = TransactionListFilterForm(request.session['transaction_list_filter_form'])
+        else:
+            form = TransactionListFilterForm(initial={'status': 'all'})
+
+    transaction_list = Transaction.objects.all()
+    if form.is_valid():
         transaction_list = Transaction.objects.all()
+        if form.cleaned_data['status'] == 'paid':
+            transaction_list = transaction_list.filter(paid_at__isnull=False)
+        if form.cleaned_data['status'] == 'unpaid':
+            transaction_list = transaction_list.filter(paid_at__isnull=True)
+        if form.cleaned_data['person']:
+            transaction_list = transaction_list.filter(person=form.cleaned_data['person'])
+        if form.cleaned_data['item']:
+            transaction_list = transaction_list.filter(item=form.cleaned_data['item'])
+
 
     paginator = Paginator(transaction_list, 25)
 
