@@ -60,6 +60,8 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a href="{% url 'cashflow:person_edit' pk=person.pk %}">Editar</a></li>
+										<li role="separator" class="divider"></li>
+										<li><a href="{% url 'cashflow:person_remove' pk=person.pk %}">Excluir</a></li>
 									</ul>
 								</div>
 

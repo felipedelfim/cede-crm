@@ -79,10 +79,8 @@
 										{% if transaction.was_paid == False %}
 										<li><a href="{% url 'cashflow:transaction_pay' pk=transaction.pk %}">Marcar como Pago</a></li>
 										{% endif %}
-										{% if user.is_authenticated %}
 										<li role="separator" class="divider"></li>
 										<li><a href="{% url 'cashflow:transaction_remove' pk=transaction.pk %}">Excluir</a></li>
-										{% endif %}
 									</ul>
 								</div>
 							</td>

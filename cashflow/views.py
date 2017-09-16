@@ -153,6 +153,11 @@ def person_edit(request, pk):
 		form = PersonForm(instance=person)
 	return render(request, 'cashflow/person_edit.html', {'form': form})
 
+def person_remove(request, pk):
+	person = get_object_or_404(Person, pk=pk)
+	person.delete()
+	return redirect('cashflow:person_list')
+
 def person_import(request):
     if request.method == 'POST':
         form = PersonImportForm(request.POST)
@@ -242,6 +247,11 @@ def item_edit(request, pk):
 	else:
 		form = ItemForm(instance=item)
 	return render(request, 'cashflow/item_edit.html', {'form': form})
+
+def item_remove(request, pk):
+	item = get_object_or_404(Item, pk=pk)
+	item.delete()
+	return redirect('cashflow:item_list')
 
 def category_items(request, pk):
     items = get_list_or_404(Item, category_id=pk)
