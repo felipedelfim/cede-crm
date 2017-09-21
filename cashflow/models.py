@@ -17,6 +17,7 @@ class Transaction(models.Model):
 		if not self.pk:
 			self.item.add_inventory(-1 * self.amount)
 		super(Transaction, self).save(args, kwargs)
+	transaction_type = models.IntegerField(default=1) # 1-account receivable, 2-account payable, 3-inventory input, 4-inventory output, 5-loan, 6-devolution
 	category = models.ForeignKey('Category', on_delete=models.PROTECT)
 	item = models.ForeignKey('Item', on_delete=models.PROTECT)
 	person = models.ForeignKey('Person', on_delete=models.PROTECT)

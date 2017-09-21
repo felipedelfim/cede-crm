@@ -6,7 +6,7 @@ class TransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
-        exclude = ['created_at', 'updated_at']
+        exclude = ['created_at', 'updated_at', 'transaction_type', 'is_deleted']
         labels = {
             'category': _('Categoria'),
             'item': _('Item'),
