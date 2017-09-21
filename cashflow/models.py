@@ -2,6 +2,15 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 
+TransactionTypes = (
+    (1, 'AccountReceivable'),
+    (2, 'AccountPayable'),
+    (3, 'InventoryInput'),
+    (4, 'InventoryOutput'),
+    (5, 'Loan'),
+    (6, 'Devolution'),
+)
+
 class Transaction(models.Model):
 	def __str__(self):
 		return self.item.name + ' (' + str(self.amount) + ') '
@@ -17,7 +26,7 @@ class Transaction(models.Model):
 		if not self.pk:
 			self.item.add_inventory(-1 * self.amount)
 		super(Transaction, self).save(args, kwargs)
-	transaction_type = models.IntegerField(default=1) # 1-account receivable, 2-account payable, 3-inventory input, 4-inventory output, 5-loan, 6-devolution
+	transaction_type = models.IntegerField(default=1, choices=TransactionTypes) # 1-account receivable, 2-account payable, 3-inventory input, 4-inventory output, 5-loan, 6-devolution
 	category = models.ForeignKey('Category', on_delete=models.PROTECT)
 	item = models.ForeignKey('Item', on_delete=models.PROTECT)
 	person = models.ForeignKey('Person', on_delete=models.PROTECT)
