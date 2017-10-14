@@ -1,145 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load staticfiles %}
-<head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-	<title>{% block title %}CEDE - Fluxo de Caixa{% endblock %}</title>
+    <title>{% block title %}CEDE - ERP - Fluxo de Caixa{% endblock %}</title>
 
 	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
 
-	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Bootstrap -->
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
 
-	<!-- MetisMenu CSS -->
-	<link rel="stylesheet" href="{% static 'vendor/metisMenu/metisMenu.min.css' %}">
+    <!-- Custom Theme Style -->
+    <link href="{% static 'build/css/custom.css' %}" rel="stylesheet">
+  </head>
 
-	<!-- Custom CSS -->
-	<link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
-	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-compass"></i> <span>CEDE - ERP</span></a>
+            </div>
 
-	<!-- Custom Fonts -->
-	<link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+            <div class="clearfix"></div>
 
-	<!-- Date Picker -->
-	<link rel="stylesheet" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
-	<link rel="stylesheet" href="{% static 'vendor/datepicker/css/bootstrap-datepicker.css' %}">
+            <br />
 
-	<!-- Selectize -->
-	<link rel="stylesheet" href="{% static 'vendor/selectize/css/selectize.bootstrap3.css' %}">
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
 
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
+                  <li><a><i class="fa fa-exchange"></i> Transações <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{% url 'cashflow:transaction_list' %}">Listar</a></li>
+                      <li><a href="{% url 'cashflow:transaction_new' %}">Adicionar</a></li>
+                      <li><a href="{% url 'cashflow:transaction_report' %}">Relatórios</a></li>
+                    </ul>
+                  </li>
 
-</head>
+				  <li><a><i class="fa fa-users"></i> Frequentadores <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{% url 'cashflow:person_list' %}">Listar</a></li>
+                      <li><a href="{% url 'cashflow:person_new' %}">Adicionar</a></li>
+                      <li><a href="{% url 'cashflow:person_import' %}">Importar</a></li>
+                    </ul>
+                  </li>
 
-<body>
+				  <li><a><i class="fa fa-list"></i> Itens <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{% url 'cashflow:item_list' %}">Listar</a></li>
+                      <li><a href="{% url 'cashflow:item_import' %}">Importar</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
 
-	<div id="wrapper">
+            </div>
+            <!-- /sidebar menu -->
 
-		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="{% url 'cashflow:transaction_list' %}">CEDE - Fluxo de Caixa</a>
-			</div>
-			<!-- /.navbar-header -->
+          </div>
+        </div>
 
-			<div class="navbar-default sidebar" role="navigation">
-				<div class="sidebar-nav navbar-collapse">
-					<ul class="nav" id="side-menu">
-						<li>
-							<a href="#"><i class="fa fa-exchange fa-fw"></i> Transações<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level">
-								<li>
-									<a href="{% url 'cashflow:transaction_list' %}"> Listar </a>
-								</li>
-								<li>
-									<a href="{% url 'cashflow:transaction_new' %}"> Adicionar </a>
-								</li>
-								<li>
-									<a href="{% url 'cashflow:transaction_report' %}"> Relatórios </a>
-								</li>
-							</ul>
-							<!-- /.nav-second-level -->
-						</li>
-						<li>
-							<a href="#"><i class="fa fa-users fa-fw"></i> Frequentadores<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level">
-								<li>
-									<a href="{% url 'cashflow:person_list' %}"> Listar </a>
-								</li>
-								<li>
-									<a href="{% url 'cashflow:person_new' %}"> Adicionar </a>
-								</li>
-								<li>
-									<a href="{% url 'cashflow:person_import' %}"> Importar </a>
-								</li>
-							</ul>
-							<!-- /.nav-second-level -->
-						</li>
-						<li>
-							<a href="#"><i class="fa fa-list fa-fw"></i> Itens<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level">
-								<li>
-									<a href="{% url 'cashflow:item_list' %}"> Listar </a>
-								</li>
-								<li>
-									<a href="{% url 'cashflow:item_import' %}"> Importar </a>
-								</li>
-							</ul>
-							<!-- /.nav-second-level -->
-						</li>
-					</ul>
-				</div>
-				<!-- /.sidebar-collapse -->
-			</div>
-			<!-- /.navbar-static-side -->
-		</nav>
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
 
-		<!-- Page Content -->
-		<div id="page-wrapper">
+
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>{% block header %}Fluxo de Caixa{% endblock %}</h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
 			{% block content %}
-			{% endblock %}
-		</div>
-		<!-- /#page-wrapper -->
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Plain Page</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      Add content to the page ...
+                  </div>
+                </div>
+              </div>
+  		    {% endblock %}
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
 
-	</div>
-	<!-- /#wrapper -->
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
 
-	<!-- jQuery -->
-	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-	<script src="{% static 'vendor/jquery/jquery.mask.js' %}"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-
-	<!-- Metis Menu Plugin JavaScript -->
-	<script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
-
+    <!-- jQuery -->
+    <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
 	<!-- Moment -->
 	<script src="{% static 'vendor/moment/moment.min.js' %}"></script>
-
 	<!-- DatePicker -->
 	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
 	<script src="{% static 'vendor/datepicker/js/bootstrap-datepicker.js' %}"></script>
 	<script src="{% static 'vendor/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
-
 	<!-- Selectize -->
 	<script src="{% static 'vendor/selectize/js/standalone/selectize.min.js' %}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'build/js/custom.js' %}"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="{% static 'js/sb-admin-2.js' %}"></script>
-
-	<script>
+	<!-- <script>
 		$('select').selectize();
 		$('button[type="reset"]').click(function(){
 			window.location = window.location;
@@ -147,11 +170,9 @@
 		$('form').submit(function(){
 			$('.save').prop('disabled', true);
 		});
-	</script>
+	</script> -->
 
 	{% block script %}
 	{% endblock %}
-
-</body>
-
+  </body>
 </html>
